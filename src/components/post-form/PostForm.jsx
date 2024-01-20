@@ -44,14 +44,20 @@ export default function PostForm({ post }) {
       if (file) {
         const fileId = file.$id;
         data.featuredimage = fileId;
-        const dbPost = await appwriteService.createPost({
-          ...data,
-          userId: userData.$id,
-        });
-
-        if (dbPost) {
-          navigate(`/post/${dbPost.$id}`);
+        try {
+          const dbPost = await appwriteService.createPost({
+            ...data,
+            userId: userData.$id,
+          });
+        
+          if (dbPost) {
+            navigate(`/post/${dbPost.$id}`);
+          }
+        } catch (error) {
+          console.error("Error creating post:", error);
+          // Handle the error (e.g., show a user-friendly error message)
         }
+        
       }
     }
   };
